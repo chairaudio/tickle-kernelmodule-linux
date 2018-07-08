@@ -1,0 +1,13 @@
+src/*.o
+src/*.ko
+src/*.cmd
+src/.*
+src/*.mod.c
+src/modules.order
+src/Module.symvers
+doc
+build
+subprojects/*
+!subprojects/*.wrap
+gitversion.h
+.vscode

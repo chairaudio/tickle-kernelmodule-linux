@@ -1,0 +1,2 @@
+SUBSYSTEMS=="tickle", MODE:="0666"
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="beef", RUN+="/sbin/modprobe tickle"
