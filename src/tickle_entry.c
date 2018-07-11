@@ -4,7 +4,7 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("chair.audio");
 MODULE_DESCRIPTION(TICKLE);
-MODULE_VERSION(VERSION);
+MODULE_VERSION(GITVERSION);
 
 #include "./tickle_service.h"
 static TickleService service;

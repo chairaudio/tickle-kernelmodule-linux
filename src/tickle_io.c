@@ -94,10 +94,10 @@ ssize_t _tickle_io_read(struct file* filp,
                         size_t size,
                         loff_t* offset) {
     // TickleIO* self = filp->private_data;
-    char* message = "foobar\0";
-    printk(KERN_INFO "%s %ld\n", __PRETTY_FUNCTION__, size);
-    copy_to_user(dst, message, 6);
-    return 6;
+    // char* message = "foobar\0";
+    // printk(KERN_INFO "%s %ld\n", __PRETTY_FUNCTION__, size);
+    // copy_to_user(dst, message, 6);
+    return 0;
 }
 
 long _tickle_io_ioctl(struct file* filp,
@@ -121,8 +121,8 @@ long _tickle_io_ioctl(struct file* filp,
         } break;
         case TICKLE_IOC_GET_KERNEL_MODULE_VERSION: {
             SmallBuffer version;
-            strcpy(version.data, VERSION);
-            version.size = strlen(VERSION);
+            strcpy(version.data, GITVERSION);
+            version.size = strlen(GITVERSION);
             if (copy_to_user((void __user*)argp, &version,
                              sizeof(SmallBuffer))) {
                 return -EFAULT;
