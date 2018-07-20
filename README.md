@@ -28,3 +28,7 @@ $ sudo cp ./src/tickle.ko /lib/modules/$(uname -r)/extra
 $ sudo depmod -a
 
 
+# after upgrading the kernel
+
+$ cd src
+$ make clean
