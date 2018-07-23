@@ -20,7 +20,6 @@ bool tickle_device_is_connected(TickleDevice* self) {
 
 void tickle_device_set_context(TickleDevice* self,
                                TickleDeviceContext* context) {
-    struct isoc_frame* frame = (struct isoc_frame*)self->buffer;
     self->context = context;
 
     if (self->context) {
