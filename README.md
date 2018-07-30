@@ -12,7 +12,7 @@ $ sudo udevadm trigger
 
 # build and (re)load kernel module
 
-./build.py
+./melmak.py
 
 
 # make kernelmodule persistent
