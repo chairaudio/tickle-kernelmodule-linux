@@ -12,7 +12,9 @@ $ sudo udevadm trigger
 
 # build and (re)load kernel module
 
-./melmak.py
+unplug tickle from USB port
+
+$ ./melmak.py
 
 
 # make kernelmodule persistent
@@ -32,3 +34,7 @@ $ sudo depmod -a
 
 $ cd src
 $ make clean
+
+# check if kernel module is loaded
+
+$ lsmod | grep "tickle"
