@@ -22,11 +22,13 @@ $ ./melmak.py
 udev will load the module when a tickle is connected
 
 ## fish
+$ echo "tickle" | sudo tee /etc/modules-load.d/tickle.conf
 $ sudo mkdir /lib/modules/(uname -r)/extra
 $ sudo cp ./src/tickle.ko /lib/modules/(uname -r)/extra
 $ sudo depmod -a
 
 ## sh
+$ echo "tickle" | sudo tee /etc/modules-load.d/tickle.conf
 $ sudo mkdir /lib/modules/$(uname -r)/extra
 $ sudo cp ./src/tickle.ko /lib/modules/$(uname -r)/extra
 $ sudo depmod -a
