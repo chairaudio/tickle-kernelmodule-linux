@@ -7,6 +7,7 @@
 #include <linux/usb.h>
 #include <linux/device.h>
 #include <linux/uaccess.h>
+#include <linux/slab.h>
 
 #define TICKLE "tickle"
 #define TICKLE_VID 0x04b4

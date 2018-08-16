@@ -170,20 +170,20 @@ void tickle_usb_exit(tickleUSB* self) {
     usb_deregister(&tickle_usb_driver);
 }
 
-void tickle_usb_send(tickleUSB* self, TickleDeviceContext* context, MiniBuffer* buffer)
-{
+void tickle_usb_send(tickleUSB* self,
+                     TickleDeviceContext* context,
+                     MiniBuffer* buffer) {
     int result = 0, actual = 0;
     /*
     usb_fill_int_urb(context->int_out_urb,
         context->usb_device_, usb_sndintpipe(context->usb_device_, 0x02),
-        buffer, 16, 
+        buffer, 16,
         NULL, context->usb_device_, 10
-    );        
+    );
     result = usb_submit_urb(context->int_out_urb, GFP_KERNEL);*/
     memcpy(context->int_out_buffer, buffer, MINI_BUFFER_SIZE);
-    result = usb_interrupt_msg(context->usb_device_,
-                    usb_sndintpipe(context->usb_device_, 0x02),
-                    context->int_out_buffer, MINI_BUFFER_SIZE, &actual, 0
-                );    
-    printk(KERN_INFO "usb_submit_urb result %d actual %d\n", result, actual);                      
+    result = usb_interrupt_msg(
+        context->usb_device_, usb_sndintpipe(context->usb_device_, 0x02),
+        context->int_out_buffer, MINI_BUFFER_SIZE, &actual, 0);
+    printk(KERN_INFO "usb_submit_urb result %d actual %d\n", result, actual);
 }
