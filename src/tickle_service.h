@@ -10,6 +10,7 @@ typedef struct TickleService_ {
     TickleClient client;
     tickleUSB usb;
     TickleDevice device;
+    bool pm_notifier_is_registered;
 } TickleService;
 
 int tickle_service_init(TickleService*);

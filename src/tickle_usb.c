@@ -5,6 +5,13 @@
 static int _probe(struct usb_interface*, const struct usb_device_id*);
 static void _disconnect(struct usb_interface*);
 
+// https://www.kernel.org/doc/html/v4.13/driver-api/usb/power-management.html
+// https://www.kernel.org/doc/html/v4.13/driver-api/usb/usb.html#c.usb_driver
+// https://www.kernel.org/doc/html/v4.13/driver-api/usb/persist.html#usb-persist
+static int _suspend(struct usb_interface*, pm_message_t);
+static int _resume(struct usb_interface*);
+static int _reset_resume(struct usb_interface*);
+
 static struct usb_device_id tickle_usb_device_ids[] = {
     {USB_DEVICE(TICKLE_VID, TICKLE_PID)},
     {}};
@@ -14,6 +21,9 @@ static struct usb_driver tickle_usb_driver = {
     .name = TICKLE,
     .probe = _probe,
     .disconnect = _disconnect,
+    .suspend = _suspend,
+    .resume = _resume,
+    .reset_resume = _reset_resume,
     .id_table = tickle_usb_device_ids};
 
 static uint64_t count = 0;
@@ -142,12 +152,31 @@ int _probe(struct usb_interface* interface, const struct usb_device_id* id) {
 
 void _disconnect(struct usb_interface* interface) {
     TickleDeviceContext* device_context = usb_get_intfdata(interface);
-    // printk(KERN_INFO "%s\n", __PRETTY_FUNCTION__);
+    printk(KERN_INFO "%s\n", __PRETTY_FUNCTION__);
     tickle_device_set_context(device_context->device, NULL);
 
     // TODO: free
     // usb_unlink_urb(device_context->isoc_in_urb);
     // kfree(device_context);
+}
+
+int _suspend(struct usb_interface* interface, pm_message_t message) {
+    TickleDeviceContext* device_context = usb_get_intfdata(interface);
+    printk(KERN_INFO "TICKLE: _suspend\n");
+    usb_kill_urb(device_context->isoc_in_urb);
+    // usb_unlink_urb(device_context->isoc_in_urb);
+    tickle_device_set_context(device_context->device, NULL);
+    return 0;
+}
+
+int _resume(struct usb_interface* interface) {
+    printk(KERN_INFO "TICKLE: _resume\n");
+    return 0;
+}
+
+int _reset_resume(struct usb_interface* interface) {
+    printk(KERN_INFO "TICKLE: _reset_resume\n");
+    return 0;
 }
 
 int tickle_usb_init(tickleUSB* self, TickleService* service) {
