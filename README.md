@@ -3,6 +3,7 @@
 ## add rules file
 
 copy 90-tickle.rules to /etc/udev/rules.d/
+$ sudo cp 90-tickle.rules /etc/udev/rules.d/90-tickle.rules
 
 ## reload udev
 
