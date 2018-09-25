@@ -167,14 +167,14 @@ long _tickle_io_ioctl(struct file* filp,
             TickleClient* client = filp->private_data;
             uint32_t* index_ptr;
             uint32_t* color_ptr;
-            printk(KERN_INFO "TICKLE_IOC_SET_COLOR\n");
+            // printk(KERN_INFO "TICKLE_IOC_SET_COLOR\n");
             if (copy_from_user(&mini_buffer, (void __user*)argp,
-                                 sizeof(MiniBuffer))) {
-                                   return -EFAULT;  
-                                 }
+                               sizeof(MiniBuffer))) {
+                return -EFAULT;
+            }
             index_ptr = (uint32_t*)&mini_buffer.data[0];
             color_ptr = (uint32_t*)&mini_buffer.data[4];
-            printk(KERN_INFO "OK : %d %d\n", *index_ptr, *color_ptr);
+            // printk(KERN_INFO "OK : %d %d\n", *index_ptr, *color_ptr);
             tickle_usb_send(NULL, client->device->context, &mini_buffer);
             return 0;
         } break;
