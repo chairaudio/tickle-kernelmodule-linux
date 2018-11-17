@@ -52,3 +52,12 @@ should output something like:
 tickle                 16384  2
 ```
 if kernel module is loaded. If not, there will be no output. 
+
+# known issues
+
+## unsigned kernel module
+If you encounter the error:
+```
+insmod: ERROR: could not insert module ./src/tickle.ko: Required key not available
+```
+Your system has secure boot active. You can resolve this by either disabling secure boot or signing the kernel module. See https://askubuntu.com/questions/762254/why-do-i-get-required-key-not-available-when-install-3rd-party-kernel-modules
