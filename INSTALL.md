@@ -31,7 +31,7 @@ $ sudo mkdir /lib/modules/$(uname -r)/extra
 $ sudo cp ./src/tickle.ko /lib/modules/$(uname -r)/extra
 $ sudo depmod -a
 ```
-## fish
+## fish (if you use fish instead of bash)
 ```
 $ echo "tickle" | sudo tee /etc/modules-load.d/tickle.conf
 $ sudo mkdir /lib/modules/(uname -r)/extra
@@ -61,4 +61,4 @@ If you encounter the error:
 ```
 insmod: ERROR: could not insert module ./src/tickle.ko: Required key not available
 ```
-Your system has secure boot active. You can resolve this by either disabling secure boot or signing the kernel module. See https://askubuntu.com/questions/762254/why-do-i-get-required-key-not-available-when-install-3rd-party-kernel-modules
+Your system has UEFI secure boot active. You can resolve this by either disabling secure boot in the EFI menue before booting or signing the kernel module yourself. See https://askubuntu.com/questions/762254/why-do-i-get-required-key-not-available-when-install-3rd-party-kernel-modules
