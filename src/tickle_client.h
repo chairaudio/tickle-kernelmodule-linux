@@ -2,11 +2,11 @@
 
 #include "./tickle.h"
 
-typedef struct TickleClient_ {
+struct TickleClient_ {
     TickleService* service;
     TickleIO* io;
     TickleDevice* device;
-} TickleClient;
+};
 
 void tickle_client_init(TickleClient*, TickleService*);
 void tickle_client_exit(TickleClient*);

@@ -71,11 +71,11 @@ int _probe(struct usb_interface* interface, const struct usb_device_id* id) {
     int error;
     // int endpoint_index;
 
-    // printk(KERN_INFO "%s\n", __PRETTY_FUNCTION__);
+    printk(KERN_INFO "%s\n", __PRETTY_FUNCTION__);
 
     if (id->idProduct == TICKLE_PID) {
         // struct usb_host_interface* host_interface;
-        tickleUSB* self = (tickleUSB*)id->driver_info;
+        TickleUSB* self = (TickleUSB*)id->driver_info;
         TickleDevice* device = tickle_service_create_device(self->service);
         TickleDeviceContext* device_context = NULL;
         struct usb_device* usb_device_ = interface_to_usbdev(interface);
@@ -145,8 +145,10 @@ int _probe(struct usb_interface* interface, const struct usb_device_id* id) {
                     printk(KERN_INFO "dunno Y\n");
                     break;*/
         }
+        // printk(KERN_INFO "take\n");
         return 0;  // we take the device
     }
+    // printk(KERN_INFO "dont take\n");
     return -1;  // we do not take the device
 }
 
@@ -179,7 +181,7 @@ int _reset_resume(struct usb_interface* interface) {
     return 0;
 }
 
-int tickle_usb_init(tickleUSB* self, TickleService* service) {
+int tickle_usb_init(TickleUSB* self, TickleService* service) {
     int result;
 
     self->service = service;
@@ -195,11 +197,11 @@ int tickle_usb_init(tickleUSB* self, TickleService* service) {
     return 0;
 }
 
-void tickle_usb_exit(tickleUSB* self) {
+void tickle_usb_exit(TickleUSB* self) {
     usb_deregister(&tickle_usb_driver);
 }
 
-void tickle_usb_send(tickleUSB* self,
+void tickle_usb_send(TickleUSB* self,
                      TickleDeviceContext* context,
                      MiniBuffer* buffer) {
     int result = 0, actual = 0;

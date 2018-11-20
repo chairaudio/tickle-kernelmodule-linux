@@ -151,6 +151,12 @@ long _tickle_io_ioctl(struct file* filp,
             }
             return -ENOTTY;
         } break;
+        case TICKLE_IOC_START: {
+            printk(KERN_INFO "%s TICKLE_IOC_START\n", __PRETTY_FUNCTION__);
+        } break;
+        case TICKLE_IOC_STOP: {
+            printk(KERN_INFO "%s TICKLE_IOC_STOP\n", __PRETTY_FUNCTION__);
+        } break;
         case TICKLE_IOC_READ_FRAME: {
             TickleClient* client = filp->private_data;
             if (client->device && tickle_device_is_connected(client->device)) {

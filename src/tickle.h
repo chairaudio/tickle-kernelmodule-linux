@@ -16,7 +16,7 @@
 typedef struct TickleService_ TickleService;
 typedef struct TickleIO_ TickleIO;
 typedef struct TickleClient_ TickleClient;
-typedef struct tickleUSB_ tickleUSB;
+typedef struct TickleUSB_ TickleUSB;
 typedef struct TickleDevice_ TickleDevice;
 typedef struct TickleDeviceContext_ TickleDeviceContext;
 

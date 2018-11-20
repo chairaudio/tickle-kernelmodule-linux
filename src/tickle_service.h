@@ -5,13 +5,13 @@
 #include "./tickle_usb.h"
 #include "./tickle_device.h"
 
-typedef struct TickleService_ {
+struct TickleService_ {
     TickleIO io;
     TickleClient client;
-    tickleUSB usb;
+    TickleUSB usb;
     TickleDevice device;
     bool pm_notifier_is_registered;
-} TickleService;
+};
 
 int tickle_service_init(TickleService*);
 void tickle_service_exit(TickleService*);

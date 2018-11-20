@@ -2,13 +2,13 @@
 
 #include "./tickle.h"
 
-typedef struct TickleDevice_ {
+struct TickleDevice_ {
     TickleService* service;
     TickleDeviceContext* context;
     BigBuffer* buffer;
     SmallBuffer serial;
     SmallBuffer version;
-} TickleDevice;
+};
 
 void tickle_device_init(TickleDevice*, TickleService*);
 void tickle_device_exit(TickleDevice*);
