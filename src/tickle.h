@@ -20,4 +20,7 @@ typedef struct TickleUSB_ TickleUSB;
 typedef struct TickleDevice_ TickleDevice;
 typedef struct TickleDeviceContext_ TickleDeviceContext;
 
+typedef struct TickleUrb_ TickleUrb;
+typedef struct TickleUrbPool_ TickleUrbPool;
+
 #include "./tickle_protocol.h"

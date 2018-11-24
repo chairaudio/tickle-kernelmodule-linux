@@ -27,12 +27,12 @@ static struct usb_driver tickle_usb_driver = {
     .id_table = tickle_usb_device_ids};
 
 static uint64_t count = 0;
-void _complete(struct urb* urb_) {
+void _complete(struct urb* urb) {
     int result = 0;
-    TickleDeviceContext* context = urb_->context;
+    TickleDeviceContext* context = urb->context;
 
-    if (urb_->status) {
-        printk(KERN_INFO "urb _complete status %d\n", urb_->status);
+    if (urb->status) {
+        printk(KERN_INFO "urb _complete status %d\n", urb->status);
         return;
     }
 
@@ -40,22 +40,23 @@ void _complete(struct urb* urb_) {
     // Completion handlers for isochronous URBs should only see
     // urb->status set to zero, -ENOENT, -ECONNRESET, -ESHUTDOWN, or
     // -EREMOTEIO.
-    /*
+
     if ((count % 1000) == 0) {
         struct isoc_frame* frame = (struct isoc_frame*)context->transfer_buffer;
-        printk(KERN_INFO "urb _complete status %d\n", urb_->status);
+        printk(KERN_INFO "urb _complete status %d\n", urb->status);
         // -115 EINPROGRESS
-        printk(KERN_INFO "urb _complete error_count %d\n", urb_->error_count);
+        printk(KERN_INFO "urb _complete error_count %d\n", urb->error_count);
         printk(KERN_INFO "urb _complete iso_frame_desc status %d\n",
-               urb_->iso_frame_desc[0].status);
+               urb->iso_frame_desc[0].status);
         // -18 : -EXDEV : ISO transfer only partially completed
         // -71 : -EPROTO
 
-        printk(KERN_INFO "urb _complete iso_frame_desc actual_length % d\n ",
-               urb_->iso_frame_desc[0].actual_length);
+        printk(KERN_INFO
+               "urb _complete iso_frame_desc actual_length %d startframe %d\n",
+               urb->iso_frame_desc[0].actual_length, urb->start_frame);
         printk(KERN_INFO "frame->number %d\n", frame->number);
         printk(KERN_INFO "frame->n_samples %d\n", frame->n_samples);
-    }*/
+    }
 
     tickle_device_copy_buffer(context->device, context->transfer_buffer);
 
@@ -116,6 +117,7 @@ int _probe(struct usb_interface* interface, const struct usb_device_id* id) {
             iso->length = BIG_BUFFER_SIZE;
         }
         device_context->int_out_urb = usb_alloc_urb(0, GFP_KERNEL);
+        tickle_urb_pool_init(&device_context->urb_pool, device_context);
 
         error = usb_set_interface(
             device_context->usb_device_,
@@ -217,4 +219,25 @@ void tickle_usb_send(TickleUSB* self,
         context->usb_device_, usb_sndintpipe(context->usb_device_, 0x02),
         context->int_out_buffer, MINI_BUFFER_SIZE, &actual, 0);
     printk(KERN_INFO "usb_submit_urb result %d actual %d\n", result, actual);
+}
+
+void tickle_urb_init(TickleUrb* self, TickleUrbPool* pool, uint16_t idx) {
+    printk(KERN_INFO "init turb %d\n", idx);
+    self->pool = pool;
+    self->idx = idx;
+}
+
+void tickle_urb_pool_init(TickleUrbPool* self, TickleDeviceContext* context) {
+    uint16_t idx;
+    printk(KERN_INFO "init pool \n");
+    self->context = context;
+
+    for (idx = 0; idx < TICKLE_URB_POOL_SIZE; ++idx) {
+        TickleUrb* turb = &self->urbs[idx];
+        tickle_urb_init(turb, self, idx);
+    }
+}
+
+void tickle_urb_pool_submit(TickleUrbPool* self) {
+    printk(KERN_INFO "tickle_urb_pool_submit\n");
 }
