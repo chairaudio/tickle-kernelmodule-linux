@@ -9,8 +9,10 @@ struct TickleUSB_ {
 #define TICKLE_URB_POOL_SIZE 16
 
 struct TickleUrb_ {
-    struct urb isoc_in_urb;
     int idx;
+    BigBuffer* transfer_buffer;
+    struct urb* isoc_in_urb;
+
     TickleUrbPool* pool;
 };
 

@@ -159,8 +159,10 @@ long _tickle_io_ioctl(struct file* filp,
         } break;
         case TICKLE_IOC_READ_FRAME: {
             TickleClient* client = filp->private_data;
+            BigBuffer buffer;
             if (client->device && tickle_device_is_connected(client->device)) {
-                if (copy_to_user((void __user*)argp, client->device->buffer,
+                tickle_device_copy_buffer_out(client->device, &buffer);
+                if (copy_to_user((void __user*)argp, &buffer,
                                  sizeof(BigBuffer))) {
                     return -EFAULT;
                 }

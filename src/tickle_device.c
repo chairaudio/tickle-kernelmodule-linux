@@ -8,6 +8,7 @@ void tickle_device_init(TickleDevice* self, TickleService* service) {
     self->buffer = kmalloc(BIG_BUFFER_SIZE, GFP_KERNEL);
     self->serial.size = 0;
     self->version.size = 0;
+    spin_lock_init(&self->frame_lock);
 }
 
 void tickle_device_exit(TickleDevice* self) {
@@ -29,6 +30,16 @@ void tickle_device_set_context(TickleDevice* self,
     }
 }
 
-void tickle_device_copy_buffer(TickleDevice* self, BigBuffer* buffer) {
+void tickle_device_copy_buffer_in(TickleDevice* self, BigBuffer* buffer) {
+    unsigned long flags;
+    spin_lock_irqsave(&self->frame_lock, flags);
     memcpy(self->buffer, buffer, BIG_BUFFER_SIZE);
+    spin_unlock_irqrestore(&self->frame_lock, flags);
+}
+
+void tickle_device_copy_buffer_out(TickleDevice* self, BigBuffer* buffer) {
+    unsigned long flags;
+    spin_lock_irqsave(&self->frame_lock, flags);
+    memcpy(buffer, self->buffer, BIG_BUFFER_SIZE);
+    spin_unlock_irqrestore(&self->frame_lock, flags);
 }

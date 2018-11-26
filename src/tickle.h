@@ -8,6 +8,7 @@
 #include <linux/device.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
+#include <linux/spinlock.h>
 
 #define TICKLE "tickle"
 #define TICKLE_VID 0x04b4
